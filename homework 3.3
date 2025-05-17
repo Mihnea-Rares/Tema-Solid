@@ -1,0 +1,78 @@
+import java.util.List;
+public class Main {
+    public static void main(String[] args) {
+        List<Shape> shapes = List.of(
+                new Circle(5),
+                new Rectangle(4, 6),
+                new Triangle(3, 7)
+        );
+
+        double totalArea = AreaCalculator.sumAreas(shapes);
+        System.out.printf("Total area: %.2f%n", totalArea);
+    }
+}
+
+
+interface Shape {
+    double calculateArea();
+}
+
+
+
+class Circle implements Shape {
+    private double radius;
+
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public double calculateArea() {
+        return Math.PI * radius * radius;
+    }
+}
+
+
+
+
+class Rectangle implements Shape {
+    private double width;
+    private double height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public double calculateArea() {
+        return width * height;
+    }
+}
+
+
+class Triangle implements Shape {
+    private double base;
+    private double height;
+
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+
+    @Override
+    public double calculateArea() {
+        return 0.5 * base * height;
+    }
+}
+
+
+
+import java.util.List;
+class AreaCalculator {
+    public static double sumAreas(List<Shape> shapes) {
+        return shapes.stream()
+                .mapToDouble(Shape::calculateArea)
+                .sum();
+    }
+}
