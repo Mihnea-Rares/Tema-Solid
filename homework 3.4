@@ -1,0 +1,86 @@
+
+interface Printer {
+    void print();
+}
+
+interface Scanner {
+    void scan();
+}
+
+interface Fax {
+    void fax();
+}
+
+
+interface MultifunctionalPrinter extends Printer, Scanner, Fax {
+    
+}
+
+
+class BasicPrinter implements Printer {
+    @Override
+    public void print() {
+        System.out.println("Printing document...");
+    }
+}
+
+
+class PrinterScanner implements Printer, Scanner {
+    @Override
+    public void print() {
+        System.out.println("Printing document...");
+    }
+
+    @Override
+    public void scan() {
+        System.out.println("Scanning document...");
+    }
+}
+
+
+class OfficePrinter implements MultifunctionalPrinter {
+    @Override
+    public void print() {
+        System.out.println("Printing high-quality document...");
+    }
+
+    @Override
+    public void scan() {
+        System.out.println("Scanning document with OCR...");
+    }
+
+    @Override
+    public void fax() {
+        System.out.println("Sending fax to recipient...");
+    }
+}
+
+public class PrinterDemo {
+    public static void main(String[] args) {
+      
+        Printer simplePrinter = new BasicPrinter();
+        simplePrinter.print();
+        
+        
+        PrinterScanner comboDevice = new PrinterScanner();
+        comboDevice.print();
+        comboDevice.scan();
+        
+     
+        OfficePrinter officePrinter = new OfficePrinter();
+        officePrinter.print();
+        officePrinter.scan();
+        officePrinter.fax();
+        
+      
+        MultifunctionalPrinter mfp = new OfficePrinter();
+        mfp.print();
+        mfp.scan();
+        mfp.fax();
+    }
+}
+
+
+
+
+
