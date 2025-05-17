@@ -1,0 +1,114 @@
+
+import java.util.List;
+
+// Single Responsabilty
+
+
+interface Shape {
+    void draw();
+}
+
+
+class Circle implements Shape {
+    private double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.printf("Drawing circle with radius %.2f\n", radius);
+    }
+}
+
+class Square implements Shape {
+    private double side;
+    
+    public Square(double side) {
+        this.side = side;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.printf("Drawing square with side %.2f\n", side);
+    }
+}
+
+//Open/Closed Principle
+class Triangle implements Shape {
+    private double base;
+    private double height;
+    
+    public Triangle(double base, double height) {
+        this.base = base;
+        this.height = height;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.printf("Drawing triangle with base %.2f and height %.2f\n", base, height);
+    }
+}
+//Liskov
+class Rectangle implements Shape {
+    private double width;
+    private double height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    @Override
+    public void draw() {
+        System.out.printf("Drawing rectangle %.2f x %.2f\n", width, height);
+    }
+}
+
+//Interface Segregation
+
+interface Shape {
+    void draw();
+    double area(); // Added only essential method
+}
+//Dependecy Inversion
+
+
+class ShapeDrawer {
+    private final List<Shape> shapes;
+    
+    public ShapeDrawer(List<Shape> shapes) {
+        this.shapes = shapes;
+    }
+    
+    public void drawAll() {
+        shapes.forEach(Shape::draw);
+    }
+    
+    public double totalArea() {
+        return shapes.stream().mapToDouble(Shape::area).sum();
+    }
+}
+
+
+public class SolidShapesDemo {
+    public static void main(String[] args) {
+        // Create shapes (can be injected from configuration)
+        List<Shape> shapes = List.of(
+            new Circle(5),
+            new Square(4),
+            new Triangle(3, 6),
+            new Rectangle(4, 5)
+        );
+        
+        // High-level module depends on abstraction (Shape)
+        ShapeDrawer drawer = new ShapeDrawer(shapes);
+        
+        // Draw all shapes
+        drawer.drawAll();
+        
+        // Calculate total area
+        System.out.printf("Total area: %.2f\n", drawer.totalArea());
+    }
+}
