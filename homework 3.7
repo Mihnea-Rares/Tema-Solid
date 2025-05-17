@@ -1,0 +1,127 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+interface CoffeeMachine {
+    void start();
+    String getMachineName();
+}
+
+
+class SimpleCoffeeMachine implements CoffeeMachine {
+    @Override
+    public void start() {
+        System.out.println("Brewing simple black coffee...");
+    }
+
+    @Override
+    public String getMachineName() {
+        return "Basic Coffee Maker";
+    }
+}
+
+
+class ComplexCoffeeMachine implements CoffeeMachine {
+    @Override
+    public void start() {
+        System.out.println("Preparing  coffee with milk  and syrup options...");
+    }
+
+    @Override
+    public String getMachineName() {
+        return "Premium Coffee Station";
+    }
+}
+
+// Coffee Lover Class with Public Injection Methods
+public class CoffeeLover {
+    private List<CoffeeMachine> coffeeMachines = new ArrayList<>();
+
+  
+    public CoffeeLover() {}
+
+    // Public injection method for single machine
+    public void addCoffeeMachine(CoffeeMachine machine) {
+        if (machine != null) {
+            coffeeMachines.add(machine);
+            System.out.println("Added: " + machine.getMachineName());
+        }
+    }
+
+    // Public injection method for multiple machines
+    public void addAllCoffeeMachines(List<CoffeeMachine> machines) {
+        if (machines != null) {
+            coffeeMachines.addAll(machines);
+            machines.forEach(m -> System.out.println("Added: " + m.getMachineName()));
+        }
+    }
+
+   
+    public void removeCoffeeMachine(CoffeeMachine machine) {
+        if (coffeeMachines.remove(machine)) {
+            System.out.println("Removed: " + machine.getMachineName());
+        }
+    }
+
+  
+    public void clearAllMachines() {
+        coffeeMachines.clear();
+        System.out.println("All coffee machines removed");
+    }
+
+    
+    public void makeCoffee() {
+        if (coffeeMachines.isEmpty()) {
+            System.out.println("No coffee machines available!");
+            return;
+        }
+
+        System.out.println("\n=== Starting Coffee Session ===");
+        coffeeMachines.forEach(machine -> {
+            System.out.println("\nUsing: " + machine.getMachineName());
+            machine.start();
+        });
+        System.out.println("\n=== Enjoy your coffees! ===\n");
+    }
+}
+
+
+public class CoffeeApp {
+    public static void main(String[] args) {
+       
+        CoffeeLover lover = new CoffeeLover();
+
+        CoffeeMachine basic = new SimpleCoffeeMachine();
+        CoffeeMachine premium = new ComplexCoffeeMachine();
+        CoffeeMachine custom = new CoffeeMachine() {
+            @Override
+            public void start() {
+                System.out.println("Making custom coffe...");
+            }
+
+            @Override
+            public String getMachineName() {
+                return "Custom Cold Brew Machine";
+            }
+        };
+
+        // Inject machines through public methods
+        lover.addCoffeeMachine(basic);
+        lover.addCoffeeMachine(premium);
+        
+       
+        lover.makeCoffee();
+
+       
+        lover.addCoffeeMachine(custom);
+        
+       
+        lover.makeCoffee();
+
+  
+        lover.removeCoffeeMachine(basic);
+        
+       
+        lover.makeCoffee();
+    }
+}
