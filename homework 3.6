@@ -1,0 +1,91 @@
+import java.util.List;
+
+
+interface CoffeeMachine {
+    void start();
+    String getName();
+}
+
+
+class SimpleCoffeeMachine implements CoffeeMachine {
+    @Override
+    public void start() {
+        System.out.println("Brewing basic coffee...");
+    }
+
+    @Override
+    public String getName() {
+        return "Simple Coffee Machine";
+    }
+}
+
+
+class ComplexCoffeeMachine implements CoffeeMachine {
+    @Override
+    public void start() {
+        System.out.println("Brewing premium coffee with milk frothing and temperature control...");
+    }
+
+    @Override
+    public String getName() {
+        return "Deluxe Coffee Machine";
+    }
+}
+
+
+public class CoffeeLover {
+    private List<CoffeeMachine> coffeeMachines;
+
+    // Constructor injection of multiple machines
+    public CoffeeLover(List<CoffeeMachine> coffeeMachines) {
+        this.coffeeMachines = coffeeMachines;
+    }
+
+   
+    public void makeCoffee() {
+        System.out.println("\nStarting coffee brewing process...");
+        coffeeMachines.forEach(machine -> {
+            System.out.println("Using " + machine.getName());
+            machine.start();
+        });
+        System.out.println("All machines finished brewing!\n");
+    }
+
+   
+    public void addMachine(CoffeeMachine machine) {
+        coffeeMachines.add(machine);
+    }
+}
+
+
+public class CoffeeApp {
+    public static void main(String[] args) {
+      
+        List<CoffeeMachine> machines = List.of(
+            new SimpleCoffeeMachine(),
+            new ComplexCoffeeMachine()
+        );
+
+        // Create CoffeeLover with injected machines
+        CoffeeLover lover = new CoffeeLover(machines);
+        
+      
+        lover.makeCoffee();
+
+      
+        lover.addMachine(new CoffeeMachine() {
+            @Override
+            public void start() {
+                System.out.println("Brewing special artisan coffee...");
+            }
+
+            @Override
+            public String getName() {
+                return "Custom Artisan Machine";
+            }
+        });
+
+     
+        lover.makeCoffee();
+    }
+}
