@@ -1,0 +1,97 @@
+interface CoffeeMachine {
+    void start();
+    String getName();
+}
+
+
+public class CoffeeLover {
+    private CoffeeMachine machine;
+
+
+    public CoffeeLover(CoffeeMachine machine) {
+        this.machine = machine;
+    }
+
+    public void makeCoffee() {
+        System.out.println("Using " + machine.getName());
+        machine.start();
+    }
+
+    
+    public void setCoffeeMachine(CoffeeMachine machine) {
+        this.machine = machine;
+    }
+}
+
+
+
+class SimpleCoffeeMachine implements CoffeeMachine {
+    @Override
+    public void start() {
+        System.out.println("Brewing simple coffee...");
+    }
+
+    @Override
+    public String getName() {
+        return "Simple Coffee Machine";
+    }
+}
+
+
+class ComplexCoffeeMachine implements CoffeeMachine {
+    @Override
+    public void start() {
+        System.out.println("Brewing premium coffee with milk frothing...");
+    }
+
+    @Override
+    public String getName() {
+        return "Deluxe Coffee Machine";
+    }
+}
+
+
+class CustomCoffeeMachine implements CoffeeMachine {
+    private String customName;
+
+    public CustomCoffeeMachine(String name) {
+        this.customName = name;
+    }
+
+    @Override
+    public void start() {
+        System.out.println("Brewing custom " + customName + " coffee...");
+    }
+
+    @Override
+    public String getName() {
+        return customName + " Machine";
+    }
+}
+
+
+
+
+public class CoffeeApp {
+    public static void main(String[] args) {
+       
+        CoffeeMachine simple = new SimpleCoffeeMachine();
+        CoffeeMachine complex = new ComplexCoffeeMachine();
+        CoffeeMachine custom = new CustomCoffeeMachine("Espresso");
+
+        
+        CoffeeLover lover = new CoffeeLover(simple);
+        lover.makeCoffee();
+
+        
+        lover.setCoffeeMachine(complex);
+        lover.makeCoffee();
+
+      
+        lover.setCoffeeMachine(custom);
+        lover.makeCoffee();
+
+        
+        custom.start();
+    }
+}
