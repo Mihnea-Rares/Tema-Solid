@@ -1,0 +1,81 @@
+
+import java.util.List;
+
+interface Shape {
+    double area();  // Single responsibility 
+}
+
+// Liskov Substitution
+class Circle implements Shape {
+    private final double radius;
+    
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+    
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+//  Liskov Substitution
+class Square implements Shape {
+    private final double side;
+    
+    public Square(double side) {
+        this.side = side;
+    }
+    
+    @Override
+    public double area() {
+        return side * side;
+    }
+}
+
+// Liskov Substitution
+class Rectangle implements Shape {
+    private final double width;
+    private final double height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    @Override
+    public double area() {
+        return width * height;
+    }
+}
+
+class AreaCalculator {
+    //  Dependency Inversion
+    public double calculateTotalArea(List<Shape> shapes) {
+        return shapes.stream()
+                   .mapToDouble(Shape::area)
+                   .sum();
+    }
+}
+
+public class SolidShapesDemo {
+    public static void main(String[] args) {
+       
+        List<Shape> shapes = List.of(
+            new Circle(5),
+            new Square(4),
+            new Rectangle(3, 6),
+            new Circle(2.5)
+        );
+        
+        
+        AreaCalculator calculator = new AreaCalculator();
+        double totalArea = calculator.calculateTotalArea(shapes);
+        
+        
+        System.out.println("Calculating areas for:");
+        shapes.forEach(s -> System.out.printf("- %s: %.2f\n", 
+            s.getClass().getSimpleName(), s.area()));
+        System.out.printf("Total area: %.2f\n", totalArea);
+    }
+}
